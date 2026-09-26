@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Compass, MapPinned } from "lucide-react";
+import { Compass, Map, MapPinned } from "lucide-react";
 import { PROVIDER_BY_ID, TOWN } from "../../shared/directory";
 import type { ChatRequest } from "../../shared/schemas";
 import type { AgentStep, AssistantMessage, ChatMessage } from "../../shared/types";
 import { api } from "../api";
 import { AppShell } from "../components/AppShell";
 import { ChatThread, type TurnState } from "../components/ChatThread";
+import { MapModal } from "../components/MapModal";
 import { ProviderCard } from "../components/ProviderCard";
 import { TownMap } from "../components/TownMap";
 import { newId } from "../format";
+import { useIsMobile } from "../hooks";
 import { appendMessage, getState, setHighlighted, useStore } from "../store";
 
 /** Delay between revealed steps so the agent's work is legible. */
@@ -40,6 +42,8 @@ export function FindPage() {
   const { messages, highlighted } = useStore();
   const [turn, setTurn] = useState<TurnState>({ status: "idle" });
   const [now, setNow] = useState(() => new Date());
+  const [mapOpen, setMapOpen] = useState(false);
+  const isMobile = useIsMobile();
   const abortRef = useRef<AbortController | null>(null);
   const navigate = useNavigate();
 
@@ -94,22 +98,59 @@ export function FindPage() {
 
   const retry = () => void run(getState().messages);
 
-  const showOnMap = (id: string) => setHighlighted([id]);
+  const showOnMap = (id: string) => {
+    setHighlighted([id]);
+    if (isMobile) setMapOpen(true);
+  };
+  const openProvider = (id: string) => {
+    setMapOpen(false);
+    navigate(`/directory/${id}`);
+  };
 
   const recommended = highlighted.map((id) => PROVIDER_BY_ID[id]).filter(Boolean);
+
+  const mapLegend = (
+    <div className="map-legend">
+      <span className="row" style={{ gap: 6 }}>
+        <span className="pill-dot" style={{ background: "var(--accent)" }} />
+        Recommended
+      </span>
+      <span className="row" style={{ gap: 6 }}>
+        <span className="pill-dot" style={{ background: "var(--faint)" }} />
+        Other providers
+      </span>
+      <span className="hint" style={{ marginLeft: "auto" }}>
+        Tap a dot for details
+      </span>
+    </div>
+  );
 
   return (
     <AppShell>
       <div className="grid-2 find-grid">
-        <ChatThread
-          messages={messages}
-          turn={turn}
-          now={now}
-          highlighted={highlighted}
-          onSend={send}
-          onRetry={retry}
-          onShowOnMap={showOnMap}
-        />
+        <div className="stack" style={{ gap: 12 }}>
+          <div className="card map-bar">
+            <MapPinned size={15} style={{ flexShrink: 0, color: "var(--muted)" }} />
+            <span className="map-bar-text">
+              {recommended.length > 0
+                ? `${recommended.length} recommended on the map`
+                : `${TOWN} · fictional town`}
+            </span>
+            <button type="button" className="btn btn-sm" onClick={() => setMapOpen(true)}>
+              <Map size={13} />
+              Show map
+            </button>
+          </div>
+          <ChatThread
+            messages={messages}
+            turn={turn}
+            now={now}
+            highlighted={highlighted}
+            onSend={send}
+            onRetry={retry}
+            onShowOnMap={showOnMap}
+          />
+        </div>
         <aside className="map-side">
           <section className="card map-card">
             <div className="row" style={{ justifyContent: "space-between" }}>
@@ -119,20 +160,8 @@ export function FindPage() {
               </span>
               <span className="hint">Fictional town · schematic</span>
             </div>
-            <TownMap highlighted={highlighted} onSelect={(id) => navigate(`/directory/${id}`)} />
-            <div className="map-legend">
-              <span className="row" style={{ gap: 6 }}>
-                <span className="pill-dot" style={{ background: "var(--accent)" }} />
-                Recommended
-              </span>
-              <span className="row" style={{ gap: 6 }}>
-                <span className="pill-dot" style={{ background: "var(--faint)" }} />
-                Other providers
-              </span>
-              <span className="hint" style={{ marginLeft: "auto" }}>
-                Click a dot for details
-              </span>
-            </div>
+            <TownMap highlighted={highlighted} onSelect={openProvider} />
+            {mapLegend}
           </section>
           {recommended.length > 0 && (
             <section className="stack" style={{ gap: 10 }}>
@@ -147,6 +176,18 @@ export function FindPage() {
           )}
         </aside>
       </div>
+      <MapModal open={mapOpen && isMobile} onClose={() => setMapOpen(false)} hint="Fictional town · schematic">
+        <TownMap highlighted={highlighted} onSelect={openProvider} />
+        {mapLegend}
+        {recommended.length > 0 && (
+          <div className="stack" style={{ gap: 8, marginTop: 4 }}>
+            <span className="section-label">Recommended now</span>
+            {recommended.map((p) => (
+              <ProviderCard key={p!.id} provider={p!} now={now} compact />
+            ))}
+          </div>
+        )}
+      </MapModal>
     </AppShell>
   );
 }

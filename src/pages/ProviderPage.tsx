@@ -1,19 +1,23 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import { Accessibility, ArrowLeft, Footprints, HeartHandshake, MapPin, MessageSquareText, Phone } from "lucide-react";
+import { Accessibility, ArrowLeft, Footprints, HeartHandshake, Map, MapPin, MessageSquareText, Phone } from "lucide-react";
 import { CATEGORY_BY_ID, DISTRICT_BY_ID, PROVIDER_BY_ID, PROVIDERS } from "../../shared/directory";
 import { localClock } from "../../shared/search";
 import { AppShell } from "../components/AppShell";
+import { MapModal } from "../components/MapModal";
 import { CategoryPill, OpenStatus } from "../components/Chips";
 import { Panel } from "../components/Panel";
 import { ProviderCard } from "../components/ProviderCard";
 import { TownMap } from "../components/TownMap";
 import { dayName, formatDay } from "../format";
+import { useIsMobile } from "../hooks";
 
 export function ProviderPage() {
   const { providerId = "" } = useParams();
   const provider = PROVIDER_BY_ID[providerId];
   const [now] = useState(() => new Date());
+  const [mapOpen, setMapOpen] = useState(false);
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
   if (!provider) return <Navigate to="/directory" replace />;
 
@@ -46,6 +50,14 @@ export function ProviderPage() {
 
       <div className="grid-2">
         <div className="stack">
+          <div className="card map-bar">
+            <MapPin size={15} style={{ flexShrink: 0, color: "var(--muted)" }} />
+            <span className="map-bar-text">{district.name}</span>
+            <button type="button" className="btn btn-sm" onClick={() => setMapOpen(true)}>
+              <Map size={13} />
+              Show on map
+            </button>
+          </div>
           <section className="card" style={{ padding: "18px 20px" }}>
             <div className="stack" style={{ gap: 14 }}>
               <p className="prose">{provider.blurb}</p>
@@ -107,7 +119,7 @@ export function ProviderPage() {
           {nearby.length > 0 && (
             <section className="stack" style={{ gap: 10 }}>
               <span className="section-label">Also in {district.name}</span>
-              <div className="provider-grid" style={{ gridTemplateColumns: "repeat(2, minmax(0, 1fr))" }}>
+              <div className="provider-grid">
                 {nearby.map((p) => (
                   <ProviderCard key={p.id} provider={p} now={now} />
                 ))}
@@ -129,6 +141,16 @@ export function ProviderPage() {
           </section>
         </aside>
       </div>
+      <MapModal open={mapOpen && isMobile} onClose={() => setMapOpen(false)} title={`${provider.name} · ${district.name}`}>
+        <TownMap
+          highlighted={[provider.id]}
+          onSelect={(id) => {
+            setMapOpen(false);
+            navigate(`/directory/${id}`);
+          }}
+        />
+        <span className="hint">Schematic position only; {district.name} is a fictional part of a fictional town.</span>
+      </MapModal>
     </AppShell>
   );
 }
