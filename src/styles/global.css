@@ -1538,6 +1538,100 @@ p {
   }
 }
 
+/* ---------- Emergency banner ---------- */
+
+.emergency-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #fff1f2, #fee2e2);
+  border: 1px solid #fecaca;
+  border-left: 5px solid var(--danger);
+  color: #7f1d1d;
+}
+
+.emergency-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--danger);
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(185, 28, 28, 0.35);
+}
+
+.emergency-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.emergency-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.emergency-text {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #991b1b;
+}
+
+.emergency-text b {
+  font-weight: 700;
+  color: #7f1d1d;
+}
+
+.emergency-numbers {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.emergency-number {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.emergency-999 {
+  background: var(--danger);
+  color: #fff;
+}
+
+.emergency-111 {
+  background: #fff;
+  color: var(--danger);
+  border: 1.5px solid var(--danger);
+}
+
+@media (max-width: 640px) {
+  .emergency-banner {
+    flex-wrap: wrap;
+    padding: 14px 16px;
+  }
+  .emergency-numbers {
+    width: 100%;
+  }
+  .emergency-number {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
 /* ---------- Map bar and modal (small screens) ---------- */
 
 .map-bar {

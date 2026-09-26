@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { CATEGORIES, DISTRICTS, PROVIDERS, TOWN } from "../../shared/directory";
 import { AppShell } from "../components/AppShell";
+import { EmergencyBanner } from "../components/EmergencyBanner";
 
 export function Landing() {
   return (
@@ -42,6 +43,8 @@ export function Landing() {
           </span>
         </div>
       </section>
+
+      <EmergencyBanner />
 
       <section className="stack" style={{ gap: 12 }}>
         <span className="section-label">The goal</span>

@@ -7,6 +7,7 @@ import type { AgentStep, AssistantMessage, ChatMessage } from "../../shared/type
 import { api } from "../api";
 import { AppShell } from "../components/AppShell";
 import { ChatThread, type TurnState } from "../components/ChatThread";
+import { EmergencyBanner } from "../components/EmergencyBanner";
 import { MapModal } from "../components/MapModal";
 import { ProviderCard } from "../components/ProviderCard";
 import { TownMap } from "../components/TownMap";
@@ -127,6 +128,7 @@ export function FindPage() {
 
   return (
     <AppShell>
+      <EmergencyBanner />
       <div className="grid-2 find-grid">
         <div className="stack" style={{ gap: 12 }}>
           <div className="card map-bar">
