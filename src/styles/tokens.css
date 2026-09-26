@@ -1,0 +1,78 @@
+:root {
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --canvas: #f6f8fb;
+  --card: #ffffff;
+  --card-muted: #fafbfd;
+  --border: #e6eaf0;
+  --border-strong: #d5dbe5;
+
+  --text: #0f172a;
+  --text-2: #334155;
+  --muted: #64748b;
+  --faint: #94a3b8;
+
+  --accent: #0e7c86;
+  --accent-hover: #0b656d;
+  --accent-soft: #e6f4f5;
+  --accent-text: #0b5e66;
+  --accent-ring: rgba(14, 124, 134, 0.22);
+
+  --sev-none-fg: #475569;
+  --sev-none-bg: #f1f5f9;
+  --sev-none-border: #e2e8f0;
+  --sev-none-dot: #94a3b8;
+
+  --sev-low-fg: #92400e;
+  --sev-low-bg: #fef3c7;
+  --sev-low-border: #fcd34d;
+  --sev-low-dot: #f59e0b;
+
+  --sev-medium-fg: #9a3412;
+  --sev-medium-bg: #ffedd5;
+  --sev-medium-border: #fdba74;
+  --sev-medium-dot: #f97316;
+
+  --sev-high-fg: #991b1b;
+  --sev-high-bg: #fee2e2;
+  --sev-high-border: #fca5a5;
+  --sev-high-dot: #ef4444;
+
+  --success: #15803d;
+  --success-bg: #dcfce7;
+  --danger: #b91c1c;
+  --danger-bg: #fee2e2;
+
+  --radius-lg: 16px;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 6px 16px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 14px 34px rgba(15, 23, 42, 0.09), 0 2px 6px rgba(15, 23, 42, 0.05);
+
+  --max-width: 1200px;
+
+  /* Category pills: soft background + readable foreground, same family as the severity set. */
+  --cat-pharmacy-bg: #e6f4f5;
+  --cat-pharmacy-fg: #0b5e66;
+  --cat-gp-bg: #e0e7ff;
+  --cat-gp-fg: #3730a3;
+  --cat-dentist-bg: #dbeafe;
+  --cat-dentist-fg: #1e40af;
+  --cat-optician-bg: #ede9fe;
+  --cat-optician-fg: #5b21b6;
+  --cat-physio-bg: #dcfce7;
+  --cat-physio-fg: #166534;
+  --cat-sexual-health-bg: #fce7f3;
+  --cat-sexual-health-fg: #9d174d;
+  --cat-mental-health-bg: #fef3c7;
+  --cat-mental-health-fg: #92400e;
+  --cat-urgent-care-bg: #fee2e2;
+  --cat-urgent-care-fg: #991b1b;
+  --cat-minor-injuries-bg: #ffedd5;
+  --cat-minor-injuries-fg: #9a3412;
+  --cat-podiatry-bg: #f1f5f9;
+  --cat-podiatry-fg: #475569;
+}
